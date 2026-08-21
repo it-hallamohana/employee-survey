@@ -1,15 +1,21 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key';
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const getEnvUrl = () => process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const getEnvKey = () => process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 export const isSupabaseConfigured = (): boolean => {
+  const url = getEnvUrl();
+  const key = getEnvKey();
   return (
-    !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    process.env.NEXT_PUBLIC_SUPABASE_URL !== 'https://placeholder.supabase.co' &&
-    !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY !== 'placeholder-anon-key'
+    !!url &&
+    url !== 'https://placeholder.supabase.co' &&
+    !!key &&
+    key !== 'placeholder-anon-key'
   );
 };
+
+// Create client instance dynamically
+const supabaseUrl = getEnvUrl() || 'https://placeholder.supabase.co';
+const supabaseAnonKey = getEnvKey() || 'placeholder-anon-key';
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);

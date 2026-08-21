@@ -18,24 +18,31 @@ export default function ManagementConsoleLoginPage() {
     setError(null);
 
     try {
-      if (isSupabaseConfigured()) {
-        const { error: authError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (authError) throw authError;
-      } else {
-        // Local Fallback Admin Check for testing
-        if (email === 'admin@tmt-group.co.id' && password === 'admin123') {
-          sessionStorage.setItem('console_admin_session', 'true');
-        } else {
-          throw new Error('Kredensial tidak valid. Gunakan email: admin@tmt-group.co.id & password: admin123 (Mode Pengujian Local)');
-        }
+      // Always attempt Supabase Auth first
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (!authError && authData.session) {
+        router.push('/management-console');
+        return;
       }
 
-      router.push('/management-console');
+      // If Supabase Auth failed, check if local fallback test credentials were used
+      if (!isSupabaseConfigured() && email === 'admin@tmt-group.co.id' && password === 'admin123') {
+        sessionStorage.setItem('console_admin_session', 'true');
+        router.push('/management-console');
+        return;
+      }
+
+      if (authError) {
+        throw authError;
+      } else {
+        throw new Error('Kredensial login tidak ditemukan. Silakan periksa Email & Password Admin di Supabase Auth.');
+      }
     } catch (err: any) {
-      setError(err.message || 'Gagal melakukan verifikasi otorisasi.');
+      setError(err.message || 'Gagal melakukan verifikasi otorisasi admin.');
     } finally {
       setLoading(false);
     }
@@ -55,7 +62,7 @@ export default function ManagementConsoleLoginPage() {
         </div>
 
         {error && (
-          <div className="p-3.5 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 font-medium">
+          <div className="p-3.5 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 font-medium leading-relaxed">
             {error}
           </div>
         )}
@@ -73,7 +80,7 @@ export default function ManagementConsoleLoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="nama@tmt-group.co.id"
+                placeholder="admin.hc@hallamohana.co.id"
                 required
                 className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:ring-1 focus:ring-slate-900"
               />
