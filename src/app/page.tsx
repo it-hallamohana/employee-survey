@@ -48,12 +48,23 @@ export default function SurveyPage() {
     // Generate anonymous respondent label so database NOT NULL constraint on employee_name & direktorat is satisfied seamlessly
     const anonCode = `Responden #${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
+    // Generate UUID on client so we don't need .select('id') after insert (which fails for anonymous users under strict SELECT RLS)
+    const responseId =
+      typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+            const r = (Math.random() * 16) | 0;
+            const v = c === 'x' ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+          });
+
     try {
       if (isSupabaseConfigured()) {
         // 1. Insert into eos_responses table (segmented prefix for shared Supabase workspace)
-        const { data: responseRecord, error: respError } = await supabase
+        const { error: respError } = await supabase
           .from('eos_responses')
           .insert({
+            id: responseId,
             employee_name: anonCode,
             employee_nik: demographics.level_jabatan, // Store Level Jabatan
             direktorat: demographics.level_jabatan,   // Store Level Jabatan in direktorat column as well
@@ -63,36 +74,32 @@ export default function SurveyPage() {
             lokasi_kerja: demographics.lokasi_kerja,
             overall_rating_avg: overallAvg,
             open_feedback: openFeedback,
-          })
-          .select('id')
-          .single();
+          });
 
         if (respError) throw respError;
 
         // 2. Insert into eos_answers table
-        if (responseRecord) {
-          const answersPayload = [];
+        const answersPayload = [];
 
-          for (const category of SURVEY_CATEGORIES) {
-            for (const q of category.questions) {
-              if (q.type === 'scale' && answers[q.id] !== undefined) {
-                answersPayload.push({
-                  response_id: responseRecord.id,
-                  question_id: q.id,
-                  category: category.title,
-                  score: answers[q.id],
-                });
-              }
+        for (const category of SURVEY_CATEGORIES) {
+          for (const q of category.questions) {
+            if (q.type === 'scale' && answers[q.id] !== undefined) {
+              answersPayload.push({
+                response_id: responseId,
+                question_id: q.id,
+                category: category.title,
+                score: answers[q.id],
+              });
             }
           }
+        }
 
-          if (answersPayload.length > 0) {
-            const { error: ansError } = await supabase
-              .from('eos_answers')
-              .insert(answersPayload);
+        if (answersPayload.length > 0) {
+          const { error: ansError } = await supabase
+            .from('eos_answers')
+            .insert(answersPayload);
 
-            if (ansError) throw ansError;
-          }
+          if (ansError) throw ansError;
         }
       } else {
         // Fallback store in localStorage if Supabase env is not configured yet
