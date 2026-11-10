@@ -50,9 +50,9 @@ export default function SurveyPage() {
 
     try {
       if (isSupabaseConfigured()) {
-        // 1. Insert into survey_responses table
+        // 1. Insert into eos_responses table (segmented prefix for shared Supabase workspace)
         const { data: responseRecord, error: respError } = await supabase
-          .from('survey_responses')
+          .from('eos_responses')
           .insert({
             employee_name: demographics.employee_name,
             employee_nik: demographics.employee_nik,
@@ -69,7 +69,7 @@ export default function SurveyPage() {
 
         if (respError) throw respError;
 
-        // 2. Insert into survey_answers table
+        // 2. Insert into eos_answers table
         if (responseRecord) {
           const answersPayload = [];
 
@@ -88,7 +88,7 @@ export default function SurveyPage() {
 
           if (answersPayload.length > 0) {
             const { error: ansError } = await supabase
-              .from('survey_answers')
+              .from('eos_answers')
               .insert(answersPayload);
 
             if (ansError) throw ansError;

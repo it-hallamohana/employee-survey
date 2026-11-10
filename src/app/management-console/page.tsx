@@ -60,8 +60,8 @@ export default function ManagementConsoleDashboard() {
     try {
       if (isSupabaseConfigured()) {
         const { data, error } = await supabase
-          .from('survey_responses')
-          .select('*, answers:survey_answers(*)')
+          .from('eos_responses')
+          .select('*, answers:eos_answers(*)')
           .order('created_at', { ascending: false });
 
         if (error) throw error;
