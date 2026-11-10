@@ -76,21 +76,23 @@ export const DEPARTMENT_OPTIONS = [
 ];
 
 export const MASA_KERJA_OPTIONS = [
-  "< 1 Tahun",
-  "1 - 3 Tahun",
-  "3 - 5 Tahun",
-  "> 5 Tahun"
+  "0 - 2 Tahun",
+  "2 - 4 Tahun",
+  "4 - 6 Tahun",
+  "6 - 8 Tahun",
+  "> 8 Tahun"
 ];
 
 export const LOKASI_KERJA_OPTIONS = [
-  "Head Office",
-  "Regional Office Jakarta",
-  "Regional Office Bandung",
-  "Regional Office Surabaya",
-  "Regional Office Medan / Pekanbaru",
-  "Regional Office Balikpapan",
-  "Regional Office Makassar",
-  "Multisite / Operational Site"
+  "Pekanbaru XChange Mall",
+  "Fox Hotel Pekanbaru"
+];
+
+export const LEVEL_JABATAN_OPTIONS = [
+  "Manager",
+  "Asst. Manager",
+  "SPV",
+  "Staff"
 ];
 
 export const SURVEY_CATEGORIES: QuestionCategory[] = [
@@ -454,7 +456,7 @@ export const SURVEY_CATEGORIES: QuestionCategory[] = [
       {
         "id": 62,
         "category": "sec-5",
-        "title": "55. Sikap jujur dan tanggung jawab yang ditunjukkan Nawakara kepada karyawan.",
+        "title": "55. Sikap jujur dan tanggung jawab yang ditunjukkan Perusahaan kepada karyawan.",
         "type": "scale"
       },
       {
@@ -692,7 +694,7 @@ export const SURVEY_CATEGORIES: QuestionCategory[] = [
       {
         "id": 98,
         "category": "sec-9",
-        "title": "90. Apakah Bapak/Ibu akan merekomendasikan kepada kerabat/orang yang dikenal tentang Nawakara?",
+        "title": "90. Apakah Bapak/Ibu akan merekomendasikan kepada kerabat/orang yang dikenal tentang Perusahaan?",
         "type": "scale"
       },
       {

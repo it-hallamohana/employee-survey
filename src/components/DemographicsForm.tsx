@@ -1,13 +1,13 @@
 import React from 'react';
 import { EmployeeDemographics } from '../lib/types';
 import {
-  DIREKTORAT_OPTIONS,
   DIVISI_OPTIONS,
   DEPARTMENT_OPTIONS,
   MASA_KERJA_OPTIONS,
   LOKASI_KERJA_OPTIONS,
+  LEVEL_JABATAN_OPTIONS,
 } from '../lib/questions';
-import { User, CreditCard, Building2, Layers, Grid, Calendar, MapPin, ArrowRight } from 'lucide-react';
+import { Layers, Grid, Calendar, MapPin, Briefcase, ShieldCheck, ArrowRight } from 'lucide-react';
 
 interface DemographicsFormProps {
   data: EmployeeDemographics;
@@ -24,12 +24,8 @@ export const DemographicsForm: React.FC<DemographicsFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!data.employee_name.trim()) {
-      setError('Nama Karyawan wajib diisi.');
-      return;
-    }
-    if (!data.direktorat || !data.divisi || !data.department) {
-      setError('Direktorat, Divisi, dan Department wajib dipilih.');
+    if (!data.divisi || !data.department || !data.level_jabatan || !data.masa_kerja || !data.lokasi_kerja) {
+      setError('Mohon lengkapi seluruh profil demografi (Divisi, Department, Level Jabatan, Masa Kerja, dan Lokasi Kerja) sebelum melanjutkan.');
       return;
     }
     setError(null);
@@ -38,11 +34,17 @@ export const DemographicsForm: React.FC<DemographicsFormProps> = ({
 
   return (
     <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 sm:p-8 space-y-6">
-      <div className="border-b border-slate-100 pb-4">
-        <h2 className="text-xl font-bold text-slate-900">Identitas & Profil Responden</h2>
-        <p className="text-sm text-slate-500 mt-1">
-          Lengkapi informasi data diri Anda di bawah ini sebelum memulai pengisian survei.
-        </p>
+      <div className="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-bold text-slate-900">Profil Demografi Responden</h2>
+          <p className="text-sm text-slate-500 mt-1">
+            Survei ini bersifat rahasia (semi-anonim). Nama dan NIK tidak diperlukan untuk menjaga objektivitas penilaian.
+          </p>
+        </div>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-md text-xs font-semibold text-emerald-800 self-start sm:self-auto shrink-0">
+          <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <span>Identitas Rahasia</span>
+        </div>
       </div>
 
       {error && (
@@ -53,65 +55,24 @@ export const DemographicsForm: React.FC<DemographicsFormProps> = ({
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {/* Nama Karyawan */}
+          {/* Lokasi Kerja */}
           <div className="space-y-1.5 sm:col-span-2">
-            <label htmlFor="employee_name" className="block text-sm font-semibold text-slate-800">
-              Nama Karyawan <span className="text-red-500">*</span>
+            <label htmlFor="lokasi_kerja" className="block text-sm font-semibold text-slate-800">
+              Lokasi Kerja / Unit Bisnis <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                <User className="w-4 h-4" />
-              </div>
-              <input
-                type="text"
-                id="employee_name"
-                value={data.employee_name}
-                onChange={(e) => onChange('employee_name', e.target.value)}
-                placeholder="Masukkan nama lengkap Anda"
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors"
-                required
-              />
-            </div>
-          </div>
-
-          {/* NIK / ID Karyawan */}
-          <div className="space-y-1.5">
-            <label htmlFor="employee_nik" className="block text-sm font-semibold text-slate-800">
-              NIK / Nomor Induk Karyawan
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                <CreditCard className="w-4 h-4" />
-              </div>
-              <input
-                type="text"
-                id="employee_nik"
-                value={data.employee_nik}
-                onChange={(e) => onChange('employee_nik', e.target.value)}
-                placeholder="Opsional / NIK Karyawan"
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors"
-              />
-            </div>
-          </div>
-
-          {/* Direktorat */}
-          <div className="space-y-1.5">
-            <label htmlFor="direktorat" className="block text-sm font-semibold text-slate-800">
-              Direktorat <span className="text-red-500">*</span>
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                <Building2 className="w-4 h-4" />
+                <MapPin className="w-4 h-4" />
               </div>
               <select
-                id="direktorat"
-                value={data.direktorat}
-                onChange={(e) => onChange('direktorat', e.target.value)}
+                id="lokasi_kerja"
+                value={data.lokasi_kerja}
+                onChange={(e) => onChange('lokasi_kerja', e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors"
                 required
               >
-                <option value="">-- Pilih Direktorat --</option>
-                {DIREKTORAT_OPTIONS.map((item) => (
+                <option value="">-- Pilih Lokasi Kerja --</option>
+                {LOKASI_KERJA_OPTIONS.map((item) => (
                   <option key={item} value={item}>
                     {item}
                   </option>
@@ -172,10 +133,36 @@ export const DemographicsForm: React.FC<DemographicsFormProps> = ({
             </div>
           </div>
 
+          {/* Level Jabatan */}
+          <div className="space-y-1.5">
+            <label htmlFor="level_jabatan" className="block text-sm font-semibold text-slate-800">
+              Level Jabatan <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <Briefcase className="w-4 h-4" />
+              </div>
+              <select
+                id="level_jabatan"
+                value={data.level_jabatan}
+                onChange={(e) => onChange('level_jabatan', e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors"
+                required
+              >
+                <option value="">-- Pilih Level Jabatan --</option>
+                {LEVEL_JABATAN_OPTIONS.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           {/* Masa Kerja */}
           <div className="space-y-1.5">
             <label htmlFor="masa_kerja" className="block text-sm font-semibold text-slate-800">
-              Masa Kerja
+              Masa Kerja <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -186,34 +173,10 @@ export const DemographicsForm: React.FC<DemographicsFormProps> = ({
                 value={data.masa_kerja}
                 onChange={(e) => onChange('masa_kerja', e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors"
+                required
               >
                 <option value="">-- Pilih Masa Kerja --</option>
                 {MASA_KERJA_OPTIONS.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Lokasi Kerja */}
-          <div className="space-y-1.5">
-            <label htmlFor="lokasi_kerja" className="block text-sm font-semibold text-slate-800">
-              Lokasi Kerja
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                <MapPin className="w-4 h-4" />
-              </div>
-              <select
-                id="lokasi_kerja"
-                value={data.lokasi_kerja}
-                onChange={(e) => onChange('lokasi_kerja', e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors"
-              >
-                <option value="">-- Pilih Lokasi Kerja --</option>
-                {LOKASI_KERJA_OPTIONS.map((item) => (
                   <option key={item} value={item}>
                     {item}
                   </option>

@@ -1,11 +1,13 @@
 export interface EmployeeDemographics {
-  employee_name: string;
-  employee_nik: string;
-  direktorat: string;
   divisi: string;
   department: string;
+  level_jabatan: string;
   masa_kerja: string;
   lokasi_kerja: string;
+  // Backward compatibility fields for database schema
+  employee_name?: string;
+  employee_nik?: string;
+  direktorat?: string;
 }
 
 export interface QuestionItem {
@@ -31,9 +33,16 @@ export interface SurveySubmissionData {
   openFeedback: string;
 }
 
-export interface SurveyResponseRecord extends EmployeeDemographics {
+export interface SurveyResponseRecord {
   id: string;
   created_at: string;
+  employee_name: string; // Stores Anonymous Respondent ID or Legacy Name
+  employee_nik?: string; // Stores Level Jabatan (Manager, Asst. Manager, SPV, Staff)
+  direktorat: string;    // Stores Level Jabatan or Unit
+  divisi: string;
+  department: string;
+  masa_kerja?: string;
+  lokasi_kerja?: string;
   overall_rating_avg: number;
   open_feedback?: string;
   answers?: {
@@ -42,3 +51,5 @@ export interface SurveyResponseRecord extends EmployeeDemographics {
     score: number;
   }[];
 }
+
+

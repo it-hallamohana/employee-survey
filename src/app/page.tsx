@@ -12,11 +12,9 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 export default function SurveyPage() {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [demographics, setDemographics] = useState<EmployeeDemographics>({
-    employee_name: '',
-    employee_nik: '',
-    direktorat: '',
     divisi: '',
     department: '',
+    level_jabatan: '',
     masa_kerja: '',
     lokasi_kerja: '',
   });
@@ -47,6 +45,8 @@ export default function SurveyPage() {
     setErrorMessage(null);
 
     const overallAvg = calculateOverallAverage();
+    // Generate anonymous respondent label so database NOT NULL constraint on employee_name & direktorat is satisfied seamlessly
+    const anonCode = `Responden #${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
     try {
       if (isSupabaseConfigured()) {
@@ -54,9 +54,9 @@ export default function SurveyPage() {
         const { data: responseRecord, error: respError } = await supabase
           .from('eos_responses')
           .insert({
-            employee_name: demographics.employee_name,
-            employee_nik: demographics.employee_nik,
-            direktorat: demographics.direktorat,
+            employee_name: anonCode,
+            employee_nik: demographics.level_jabatan, // Store Level Jabatan
+            direktorat: demographics.level_jabatan,   // Store Level Jabatan in direktorat column as well
             divisi: demographics.divisi,
             department: demographics.department,
             masa_kerja: demographics.masa_kerja,
@@ -101,7 +101,13 @@ export default function SurveyPage() {
         existing.push({
           id: `fallback-${Date.now()}`,
           created_at: new Date().toISOString(),
-          ...demographics,
+          employee_name: anonCode,
+          employee_nik: demographics.level_jabatan,
+          direktorat: demographics.level_jabatan,
+          divisi: demographics.divisi,
+          department: demographics.department,
+          masa_kerja: demographics.masa_kerja,
+          lokasi_kerja: demographics.lokasi_kerja,
           overall_rating_avg: overallAvg,
           open_feedback: openFeedback,
           answers: Object.entries(answers).map(([qId, score]) => ({
@@ -135,7 +141,7 @@ export default function SurveyPage() {
         )}
 
         {isSubmitted ? (
-          <SuccessState employeeName={demographics.employee_name} />
+          <SuccessState employeeName="Rekan Halla Mohana" />
         ) : currentStep === 0 ? (
           <DemographicsForm
             data={demographics}
