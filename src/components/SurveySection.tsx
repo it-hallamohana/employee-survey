@@ -97,15 +97,21 @@ export const SurveySection: React.FC<SurveySectionProps> = ({
 
       {/* Questions Container */}
       <div className="p-6 sm:p-8 space-y-8 divide-y divide-slate-100">
-        {category.questions.map((q, idx) => (
+        {category.questions.map((q, idx) => {
+          // Extract clean question number and text (e.g. "1. Saya dapat..." -> number "1", text "Saya dapat...")
+          const match = q.title.match(/^(\d+)\.\s*(.*)$/);
+          const displayNum = match ? match[1] : String(idx + 1);
+          const cleanTitle = match ? match[2] : q.title;
+
+          return (
           <div key={q.id} className={idx === 0 ? 'space-y-4' : 'pt-6 space-y-4'}>
             <div className="flex items-start gap-3">
               <span className="flex-shrink-0 w-7 h-7 bg-slate-100 border border-slate-200 rounded-full flex items-center justify-center text-xs font-semibold text-slate-700 mt-0.5">
-                {q.id}
+                {displayNum}
               </span>
               <div className="flex-1 space-y-1">
                 <p className="text-sm sm:text-base font-medium text-slate-900 leading-snug">
-                  {q.title}
+                  {cleanTitle}
                 </p>
                 {q.description && (
                   <p className="text-xs text-slate-500">{q.description}</p>
@@ -136,7 +142,8 @@ export const SurveySection: React.FC<SurveySectionProps> = ({
               </div>
             )}
           </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Validation Alert */}
