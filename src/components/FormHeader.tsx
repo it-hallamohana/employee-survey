@@ -1,23 +1,29 @@
 import React from 'react';
-import { ShieldCheck, FileText } from 'lucide-react';
+import { FileText } from 'lucide-react';
 
 export const FormHeader: React.FC = () => {
   return (
     <header className="bg-white border-b border-slate-200 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-mx-auto max-w-4xl mx-auto space-y-6">
+      <div className="max-w-4xl mx-auto space-y-6">
         {/* Branding Badge & Title */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-semibold tracking-wider text-slate-700 uppercase mb-3">
-              <ShieldCheck className="w-3.5 h-3.5 text-slate-600" />
-              <span>TMT Group &bull; Human Capital Division</span>
+          <div className="flex items-start sm:items-center gap-4">
+            <img
+              src="/logo-halla-mohana.png"
+              alt="Halla Mohana Logo"
+              className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0"
+            />
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-semibold tracking-wider text-slate-700 uppercase mb-2">
+                <span>Halla Mohana &bull; Human Capital Division</span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+                Employee Opinion Survey
+              </h1>
+              <p className="text-sm text-slate-500 mt-1">
+                Survei Keterlibatan dan Evaluasi Lingkungan Kerja Karyawan
+              </p>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-              Employee Opinion Survey
-            </h1>
-            <p className="text-sm text-slate-500 mt-1">
-              Survei Keterlibatan dan Evaluasi Lingkungan Kerja Karyawan
-            </p>
           </div>
 
           <div className="flex items-center gap-2 text-xs text-slate-500 bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-md self-start sm:self-auto">

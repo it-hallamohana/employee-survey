@@ -30,7 +30,7 @@ export default function ManagementConsoleLoginPage() {
       }
 
       // If Supabase Auth failed, check if local fallback test credentials were used
-      if (!isSupabaseConfigured() && email === 'admin@tmt-group.co.id' && password === 'admin123') {
+      if (!isSupabaseConfigured() && email === 'admin.hc@hallamohana.co.id' && password === 'admin123') {
         sessionStorage.setItem('console_admin_session', 'true');
         router.push('/management-console');
         return;
@@ -52,12 +52,14 @@ export default function ManagementConsoleLoginPage() {
     <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
       <div className="bg-white border border-slate-200 rounded-xl shadow-xl p-8 max-w-md w-full space-y-6">
         <div className="text-center space-y-2">
-          <div className="mx-auto w-12 h-12 bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-center text-slate-800">
-            <ShieldCheck className="w-6 h-6" />
-          </div>
+          <img
+            src="/logo-halla-mohana.png"
+            alt="Halla Mohana Logo"
+            className="mx-auto w-14 h-14 object-contain"
+          />
           <h1 className="text-xl font-bold text-slate-900">Konsol Manajemen Internal</h1>
           <p className="text-xs text-slate-500">
-            Masuk dengan Akun Terverifikasi Supabase Auth
+            Halla Mohana &bull; Human Capital Division
           </p>
         </div>
 

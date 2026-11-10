@@ -33,7 +33,7 @@ export const SuccessState: React.FC<SuccessStateProps> = ({ employeeName }) => {
       </div>
 
       <div className="pt-4 border-t border-slate-100 text-xs text-slate-400">
-        &copy; {new Date().getFullYear()} TMT Group / Nawakara. Human Capital Division.
+        &copy; {new Date().getFullYear()} Halla Mohana &bull; Human Capital Division.
       </div>
     </div>
   );

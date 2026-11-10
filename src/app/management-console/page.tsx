@@ -175,7 +175,7 @@ export default function ManagementConsoleDashboard() {
     link.setAttribute('href', encodedUri);
     link.setAttribute(
       'download',
-      `Survey_Responses_TMT_Group_${new Date().toISOString().slice(0, 10)}.csv`
+      `Survey_Responses_Halla_Mohana_${new Date().toISOString().slice(0, 10)}.csv`
     );
     document.body.appendChild(link);
     link.click();
@@ -197,15 +197,17 @@ export default function ManagementConsoleDashboard() {
       <header className="bg-slate-900 text-white border-b border-slate-800 py-4 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-slate-800 rounded-lg text-slate-200">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
+            <img
+              src="/logo-halla-mohana.png"
+              alt="Halla Mohana Logo"
+              className="w-10 h-10 object-contain bg-white rounded-full p-0.5"
+            />
             <div>
               <h1 className="text-base font-bold tracking-tight text-white">
                 Konsol Analitik Dashboard Internal
               </h1>
               <p className="text-xs text-slate-400">
-                TMT Group &bull; Employee Opinion Survey Management
+                Halla Mohana &bull; Human Capital Division
               </p>
             </div>
           </div>
