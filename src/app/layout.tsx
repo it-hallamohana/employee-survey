@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Employee Opinion Survey | Halla Mohana - Human Capital Division',
+  title: 'Employee Engagement Survey | Halla Mohana - Human Capital Division',
   description: 'Aplikasi Survei Keterlibatan Karyawan dan Evaluasi Lingkungan Kerja Internal PT Halla Mohana',
   icons: {
     icon: '/logo-halla-mohana.png',

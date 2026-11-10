@@ -18,7 +18,7 @@ export const FormHeader: React.FC = () => {
                 <span>Halla Mohana &bull; Human Capital Division</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-                Employee Opinion Survey
+                Employee Engagement Survey
               </h1>
               <p className="text-sm text-slate-500 mt-1">
                 Survei Keterlibatan dan Evaluasi Lingkungan Kerja Karyawan

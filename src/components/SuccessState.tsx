@@ -18,7 +18,7 @@ export const SuccessState: React.FC<SuccessStateProps> = ({ employeeName }) => {
           Terima Kasih, {employeeName}!
         </h2>
         <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-          Jawaban dan masukan Anda pada Employee Opinion Survey telah berhasil terkirim dan tersimpan dengan aman dalam database.
+          Jawaban dan masukan Anda pada Employee Engagement Survey telah berhasil terkirim dan tersimpan dengan aman dalam database.
         </p>
       </div>
 
